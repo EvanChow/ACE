@@ -6,8 +6,9 @@
 <script type="text/javascript">
 $(function(){
   $("#logout").click(function(){
-	  //window.location.href="${hosts}/dologout.do"; 
-	  
+	  window.location.href="${hosts}/dologout.do"; 
+	 
+	  /** 
 	  $.ajax({
             type: "POST",
             url: "${hosts}/dologout.do",
@@ -20,7 +21,7 @@ $(function(){
               }
             }
         });
-	  
+	  */
   });
 
 	

@@ -73,9 +73,9 @@
         <property name="realm" ref="jdbcRealm"></property>
         <property name="sessionManager" ref="sessionManager" />
         <property name="cacheManager" ref="cacheManager"/>
-        <!--  
+        <!--  -->
         <property name="rememberMeManager" ref="rememberMeManager"/>
-        -->
+        
     </bean>
     
     <!-- 会话管理器 --> 
@@ -99,8 +99,10 @@
     <!-- 会话Cookie模板 -->  
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	  <constructor-arg name="name" value="AVALONSESSIONID"/>
+	  <!--  -->
 	  <property name="httpOnly" value="true"/>
       <property name="maxAge" value="-1"/>
+      
 	</bean>
       <!--    定时10分钟检验一次有所session是否有效（毫秒单位）  -->
    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
@@ -156,7 +158,7 @@
     </bean>
     
     
-    <!-- rememberMe管理器
+    <!-- rememberMe管理器-->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cipherKey"
                   value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
@@ -168,7 +170,7 @@
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="2592000"/>
     </bean>
-	 -->
+	 
     
   
     <!--   
