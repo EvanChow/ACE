@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="SysLogMapper">
+
+	<resultMap id="SysLogMap" type="com.avalon.model.sys.SysLog">
+        <result property="id" column="ID"/>
+        <result property="action" column="ACTION"/>
+        <result property="note" column="NOTE"/>
+        <result property="operatingid" column="OPERATINGID"/>
+        <result property="msg" column="MSG"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="updatetime" column="UPDATETIME"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="SysLog_columns">
+		t.ID,t.ACTION,t.NOTE,t.OPERATINGID,t.MSG,t.CREATETIME,t.UPDATETIME
+	</sql>
+	
+	<sql id="SysLog_SQL_WHERE">
+		1=1
+				     <if test="id != null and  id.length()!=0 " >
+		             AND t.ID = #{id}   
+	                 </if>
+		         
+				     <if test="action != null and  action.length()!=0 " >
+		             AND t.ACTION = #{action}   
+	                 </if>
+		         
+				     <if test="note != null and  note.length()!=0 " >
+		             AND t.NOTE = #{note}   
+	                 </if>
+		         
+				     <if test="operatingid != null and  operatingid.length()!=0 " >
+		             AND t.OPERATINGID = #{operatingid}   
+	                 </if>
+		         
+				     <if test="msg != null and  msg.length()!=0 " >
+		             AND t.MSG = #{msg}   
+	                 </if>
+		         
+				     <if test="createtime != null" >
+		             AND t.CREATETIME = #{createtime}   
+	                 </if>
+		         
+				     <if test="updatetime != null" >
+		             AND t.UPDATETIME = #{updatetime}   
+	                 </if>
+		         
+	</sql>
+	
+	<sql id="SysLog_SQL_PAGING">
+		 <if test="sort != null  and sort != ''" >order by  #{sort}</if>
+	      <if test="order != null  and order != ''" >#{order}</if>
+		  LIMIT #{limit},#{offset}
+     </sql>
+     
+     <!-- 条件查询 -->
+     <select id="select"  parameterType="com.avalon.model.sys.SysLog" resultMap="SysLogMap">
+	   select <include refid="SysLog_columns"/>
+	    from sys_log t
+	   <where>
+		    <include refid="SysLog_SQL_WHERE"/>
+	   </where>
+	 </select>
+	 
+	 <!-- 分页查询 -->
+	 <select id="DataPagination" parameterType="com.avalon.model.sys.SysLog" resultMap="SysLogMap">
+	    select t.* from sys_log t
+		   <where>
+		    <include refid="SysLog_SQL_WHERE"/>
+		   </where>
+		   <include refid="SysLog_SQL_PAGING"/>
+	  </select>
+	  
+	  <select id="DataPaginationCount" parameterType="com.avalon.model.sys.SysLog" resultType="java.lang.Integer">
+	     select count(1) from sys_log t
+	     <where>
+		    <include refid="SysLog_SQL_WHERE"/>
+		 </where>
+	  </select>
+	 
+	 <!-- 批量删除-->
+	 <delete id="delete" parameterType="com.avalon.model.sys.SysLog">
+	   delete  from sys_log  where
+        ID in (${id}) 
+  	 </delete>
+  	 
+
+	<!-- useGeneratedKeys="true"(主键自增)  keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.avalon.model.sys.SysLog">
+        INSERT INTO sys_log (
+         ID, ACTION, NOTE, OPERATINGID, MSG, CREATETIME, UPDATETIME
+        ) VALUES (
+         #{id}, #{action}, #{note}, #{operatingid}, #{msg}, #{createtime}, #{updatetime}        
+        )
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.avalon.model.sys.SysLog">
+        INSERT INTO sys_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+           
+				<if test="id != null and id.length()>0 " >
+	        ID,
+	        </if>
+
+           
+				<if test="action != null and action.length()>0 " >
+	        ACTION,
+	        </if>
+
+           
+				<if test="note != null and note.length()>0 " >
+	        NOTE,
+	        </if>
+
+           
+				<if test="operatingid != null and operatingid.length()>0 " >
+	        OPERATINGID,
+	        </if>
+
+           
+				<if test="msg != null and msg.length()>0 " >
+	        MSG,
+	        </if>
+
+           
+           <if test="createtime != null " >
+	        CREATETIME,
+	        </if>
+
+           
+           <if test="updatetime != null " >
+	        UPDATETIME
+	        </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          
+				<if test="id != null and id.length()>0 " >
+		        #{id},
+		      </if>
+	          
+          
+				<if test="action != null and action.length()>0 " >
+		        #{action},
+		      </if>
+	          
+          
+				<if test="note != null and note.length()>0 " >
+		        #{note},
+		      </if>
+	          
+          
+				<if test="operatingid != null and operatingid.length()>0 " >
+		        #{operatingid},
+		      </if>
+	          
+          
+				<if test="msg != null and msg.length()>0 " >
+		        #{msg},
+		      </if>
+	          
+          
+         		 <if test="createtime != null" >
+		        #{createtime},
+		        </if>
+	          
+          
+         		 <if test="updatetime != null" >
+		        #{updatetime}
+		        </if>
+	          
+        </trim>
+	</insert>
+	
+	
+	<!-- 批量新增 -->
+  <insert id="insertbatch" parameterType="java.util.List" >
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+				<if test=" id != null and id.length()>0 " >
+		        ID,
+		        </if>
+				<if test=" action != null and action.length()>0 " >
+		        ACTION,
+		        </if>
+				<if test=" note != null and note.length()>0 " >
+		        NOTE,
+		        </if>
+				<if test=" operatingid != null and operatingid.length()>0 " >
+		        OPERATINGID,
+		        </if>
+				<if test=" msg != null and msg.length()>0 " >
+		        MSG,
+		        </if>
+            	<if test=" createtime != null" >
+		        CREATETIME,
+		        </if>
+            	<if test=" updatetime != null" >
+		        UPDATETIME
+		        </if>
+    </trim>
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+       <trim prefix="values (" suffix=")" suffixOverrides="," >
+          
+		     	<if test=" item.id != null and item.id.length()>0 " >
+		        #{item.id},
+		       </if>
+          
+          
+		     	<if test=" item.action != null and item.action.length()>0 " >
+		        #{item.action},
+		       </if>
+          
+          
+		     	<if test=" item.note != null and item.note.length()>0 " >
+		        #{item.note},
+		       </if>
+          
+          
+		     	<if test=" item.operatingid != null and item.operatingid.length()>0 " >
+		        #{item.operatingid},
+		       </if>
+          
+          
+		     	<if test=" item.msg != null and item.msg.length()>0 " >
+		        #{item.msg},
+		       </if>
+          
+          
+		          <if test=" item.createtime != null " >
+			        #{item.createtime},
+			      </if> 
+          
+          
+		          <if test=" item.updatetime != null " >
+			        #{item.updatetime}
+			      </if> 
+          
+        </trim>
+    </foreach>
+  </insert>
+    
+	<update id="updateSelectiveById" parameterType="com.avalon.model.sys.SysLog">
+        UPDATE sys_log 
+        <set >
+				<if test="action != null and action.length()>0 " >
+		              ACTION = #{action} ,  
+	             </if>
+		         
+				<if test="note != null and note.length()>0 " >
+		              NOTE = #{note} ,  
+	             </if>
+		         
+				<if test="operatingid != null and operatingid.length()>0 " >
+		              OPERATINGID = #{operatingid} ,  
+	             </if>
+		         
+				<if test="msg != null and msg.length()>0 " >
+		              MSG = #{msg} ,  
+	             </if>
+		         
+	             <if test="createtime != null " >
+		              CREATETIME = #{createtime} ,  
+	             </if> 
+		         
+	             <if test="updatetime != null " >
+		              UPDATETIME = #{updatetime}   
+	             </if> 
+		         
+	    </set>
+        WHERE ID = #{id}  	        
+	</update>
+	
+	
+	<update id="updatebatch" parameterType="java.util.List">
+        update sys_log 
+        <foreach collection="list" item="item" index="index" separator="," >
+           <set >
+				<if test="item.action != null and item.action.length()>0 " >
+					 #{item.ACTION} = #{item.action} ,  
+				</if>
+				<if test="item.note != null and item.note.length()>0 " >
+					 #{item.NOTE} = #{item.note} ,  
+				</if>
+				<if test="item.operatingid != null and item.operatingid.length()>0 " >
+					 #{item.OPERATINGID} = #{item.operatingid} ,  
+				</if>
+				<if test="item.msg != null and item.msg.length()>0 " >
+					 #{item.MSG} = #{item.msg} ,  
+				</if>
+	            <if test="item.createtime != null " >
+					 #{item.CREATETIME} = #{item.createtime} ,  
+				 </if>
+	            <if test="item.updatetime != null " >
+					 #{item.UPDATETIME} = #{item.updatetime}   
+				 </if>
+	         WHERE ID = #{id}  	
+	       </set>
+       </foreach>
+    	
+    </update>
+    
+    
+</mapper>
+

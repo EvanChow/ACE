@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<display-name>ACE</display-name>
+
+	<!-- 加载根目录下 -->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>ACE.root</param-value>
+	</context-param>
+
+	<!--
+		加载spring 配置文件classpath:spring-security.xml, classpath:spring-beans.xml
+	-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring.xml,
+		 classpath:spring-shiro.xml,
+		classpath:spring-mybatis.xml,
+		classpath:spring-jms.xml,
+		classpath:spring-cxf.xml,
+		classpath:spring-activiti.xml,
+		classpath:spring-websocket.xml,
+		classpath:spring-druid.xml</param-value>
+	</context-param>
+
+	<!-- 加载Log4j 日志 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	</context-param>
+
+
+
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>dev</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>dev</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>spring.liveBeansView.mbeanDomain</param-name>
+		<param-value>dev</param-value>
+	</context-param>
+
+
+	<filter>
+
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<async-supported>true</async-supported>
+		<!-- message-broker使用异步加载 <async-supported>true</async-supported> -->
+		
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- druid 阿里数据库连接池配置 -->
+	<filter>
+		<filter-name>druidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>/css/*,/style/*,/ace/*,*.js,*.css,/druid*,/attached/*,*.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>principalSessionName</param-name>
+			<param-value>sessionInfo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>profileEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<async-supported>true</async-supported>
+		<!-- message-broker使用异步加载 <async-supported>true</async-supported> -->
+	</filter>
+
+	<filter-mapping>
+		<filter-name>druidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- Shiro Filter 权限管理-->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	
+	<!-- Spring Secutiry 过滤器链配置
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+ -->
+
+
+	<!-- 监听器配置 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	
+	<!-- 这里用于启动和关闭843端口的flash websocket 策略文件-->
+	<listener>  
+        <listener-class>com.avalon.listener.ServletContextListener</listener-class>
+    </listener> 
+	
+	
+	
+
+	<!-- Spring  MVC servlet配置 -->
+	<servlet>
+		<servlet-name>springMvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+		<async-supported>true</async-supported>
+
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<!--MVC servlet配置-->
+		<url-pattern>*.do</url-pattern>
+		<!--websocket servlet配置-->
+		<url-pattern>/avalon/websocket</url-pattern>
+		<url-pattern>/sockjs/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- CXF WebService 配置 -->
+	<servlet>
+		<servlet-name>CXFService</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>CXFService</servlet-name>
+		<url-pattern>/CXF/*</url-pattern>
+	</servlet-mapping>
+
+
+
+	<!-- alibaba druid 配置 -->
+	<servlet>
+		<servlet-name>druidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>druidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.jsp</location>
+	</error-page>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

@@ -1,0 +1,11 @@
+package rules.less;
+
+import com.avalon.model.drools.Message
+
+rule "Hello World"
+    when
+        $messages : Message()
+    then
+         $messages.setStatus($messages.getStatus()+100);
+         System.out.println("{Messag:" + $messages.getMessage()+",Status:"+$messages.getStatus()+"}");
+end

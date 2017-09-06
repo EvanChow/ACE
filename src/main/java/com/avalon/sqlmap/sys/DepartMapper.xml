@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DepartMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.sys.Depart" >
+    <result column="DEPARTID" property="departid" jdbcType="VARCHAR" />
+    <result column="DEPARTNAME" property="departname" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="DEPARTDESC" property="departdesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    DEPARTID, DEPARTNAME, STATUS, DEPARTDESC
+  </sql>
+  
+  <sql id="SQL_WHERE">
+      1=1
+      <if test="departid != null and departid !='' " >
+        and departid=#{departid,jdbcType=VARCHAR}
+      </if>
+      <if test="departname != null and departname !='' " >
+        and departname=#{departname,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status=#{status,jdbcType=INTEGER}
+      </if>
+      <if test="departdesc != null and departdesc !='' " >
+        and departdesc=#{departdesc,jdbcType=VARCHAR}
+      </if>
+   </sql>
+   <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+  
+   <select id="select"  parameterType="com.avalon.model.sys.Depart" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List"/>
+    from sys_depart t
+   <where>
+	    <include refid="SQL_WHERE"/>
+   </where>
+ </select>
+ 
+  <delete id="delete" parameterType="com.avalon.model.sys.Depart" >
+    delete from sys_depart where DEPARTID in (${departid})
+  </delete>
+  
+  <select id="DataPagination" parameterType="com.avalon.model.sys.Depart" resultMap="BaseResultMap">
+    select t.* from sys_depart t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.sys.Depart" resultType="java.lang.Integer">
+     select count(1) from sys_depart t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  <insert id="insert" parameterType="com.avalon.model.sys.Depart" >
+    insert into sys_depart (DEPARTID, DEPARTNAME, STATUS, 
+      DEPARTDESC)
+    values (#{departid,jdbcType=VARCHAR}, #{departname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{departdesc,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.avalon.model.sys.Depart" >
+    insert into sys_depart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departid != null" >
+        DEPARTID,
+      </if>
+      <if test="departname != null" >
+        DEPARTNAME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="departdesc != null" >
+        DEPARTDESC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departid != null" >
+        #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="departname != null" >
+        #{departname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="departdesc != null" >
+        #{departdesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByDepartidSelective" parameterType="com.avalon.model.sys.Depart" >
+    update sys_depart
+    <set >
+      <if test="departname != null" >
+        DEPARTNAME = #{departname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="departdesc != null" >
+        DEPARTDESC = #{departdesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEPARTID = #{departid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByDepartid" parameterType="com.avalon.model.sys.Depart" >
+    update sys_depart
+    set 
+      DEPARTNAME = #{departname,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      DEPARTDESC = #{departdesc,jdbcType=VARCHAR}
+    where DEPARTID = #{departid,jdbcType=VARCHAR}
+  </update>
+</mapper>

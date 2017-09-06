@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IMGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.im.IMGroup" >
+    <id column="gid" property="gid" jdbcType="VARCHAR" />
+    <result column="groupname" property="groupname" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    gid, groupname, uid, id
+  </sql>
+  <sql id="SQL_WHERE">
+      1=1
+      <if test="gid != null and gid !='' " >
+        and gid=#{gid}
+      </if>
+      <if test="groupname != null and groupname !='' " >
+        and groupname=#{groupname}
+      </if>
+      <if test="uid != null and uid !='' " >
+        and uid=#{uid}
+      </if>
+   </sql>
+   
+   <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+  
+  <select id="select" resultMap="BaseResultMap" parameterType="com.avalon.model.im.IMGroup" >
+    select 
+    <include refid="Base_Column_List" />
+    from avalon_im_group
+     <where>
+	    <include refid="SQL_WHERE"/>
+    </where>
+  </select>
+  
+  <delete id="delete" parameterType="com.avalon.model.im.IMGroup" >
+    delete from avalon_im_group where gid in (${gid})
+  </delete>
+  
+  <select id="DataPagination" parameterType="com.avalon.model.im.IMGroup" resultMap="BaseResultMap">
+    select t.* from avalon_im_group t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.im.IMGroup" resultType="java.lang.Integer">
+     select count(1) from avalon_im_group t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from avalon_im_group
+    where gid = #{gid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from avalon_im_group
+    where gid = #{gid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.avalon.model.im.IMGroup" >
+    insert into avalon_im_group (gid, groupname, uid, 
+      id)
+    values (#{gid,jdbcType=VARCHAR}, #{groupname,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, 
+      #{id,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.avalon.model.im.IMGroup" >
+    insert into avalon_im_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="groupname != null" >
+        groupname,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.avalon.model.im.IMGroup" >
+    update avalon_im_group
+    <set >
+      <if test="groupname != null" >
+        groupname = #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        id = #{id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.avalon.model.im.IMGroup" >
+    update avalon_im_group
+    set groupname = #{groupname,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      id = #{id,jdbcType=INTEGER}
+    where gid = #{gid,jdbcType=VARCHAR}
+  </update>
+</mapper>

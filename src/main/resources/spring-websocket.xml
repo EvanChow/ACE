@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <!-- Spring Mvc WebSocket -->
+    <bean id="bootstraphandler" class="com.avalon.websocket.handler.BootstrapHandler">
+       
+    </bean>
+    
+    <websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/avalon/websocket/im/**" handler="bootstraphandler"/>
+	    <websocket:handshake-interceptors>
+	    <bean class="com.avalon.websocket.interceptor.Bootstrapnterceptor"/>
+	    </websocket:handshake-interceptors>
+	    <websocket:sockjs />
+	    
+    </websocket:handlers>
+    
+    
+    
+     <!-- Spring Mvc Message Broker -->
+     <!-- 使用配置方式开启Stomp 订阅消息，需要修改web.xml 所有filter 
+                              添加 <async-supported>true</async-supported>  支持
+     -->
+
+    <websocket:message-broker application-destination-prefix="/app" >
+	    <websocket:transport send-timeout="15000" send-buffer-size="524288"  />
+        <websocket:stomp-endpoint path="/avalon/messagebroker" >
+            
+            <websocket:handshake-handler ref="stomphandler" />
+             
+            <websocket:handshake-interceptors>
+                <bean class="com.avalon.websocket.messagebroker.StompHandshakeInterceptor"/>
+            </websocket:handshake-interceptors>
+            
+            <websocket:sockjs />
+            
+        </websocket:stomp-endpoint> 
+        <!--  
+        <websocket:stomp-broker-relay prefix="/topic,/queue" />
+         -->
+    
+        <websocket:simple-broker prefix="/topic/"/>
+    </websocket:message-broker>
+
+  
+    <bean id="stomphandler" class="com.avalon.websocket.messagebroker.StompHandshakeHandler"/>     
+ 
+    <!-- 路径规则修改，默认为  /   -->
+    <bean id="pathMatcher" class="org.springframework.util.AntPathMatcher">
+    <constructor-arg index="0" value="." />
+    </bean>
+    
+    
+</beans>

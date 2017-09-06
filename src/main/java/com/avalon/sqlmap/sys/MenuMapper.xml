@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.sys.Menu" >
+    <result column="MENUID" property="menuid" jdbcType="VARCHAR" />
+    <result column="MENUNAME" property="menuname" jdbcType="VARCHAR" />
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+    <result column="IMG" property="img" jdbcType="VARCHAR" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+    <result column="ORDERID" property="orderid" jdbcType="INTEGER" />
+    <result column="ISMENU" property="ismenu" jdbcType="INTEGER" />
+    <result column="MENUTYPE" property="menutype" jdbcType="INTEGER" />
+    <result column="STARTTIME" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="ENDTIME" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="IS_OPEN_BLANK" property="isOpenBlank" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT_OPEN" property="isDefaultOpen" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    MENUID, MENUNAME, PID, URL, IMG, ICON, ORDERID, ISMENU, MENUTYPE, STARTTIME, ENDTIME, 
+    IS_OPEN_BLANK, IS_DEFAULT_OPEN
+  </sql>
+  
+  <sql id="SQL_WHERE">
+      1=1
+      <if test="menuid != null and menuid != '' " >
+        AND MENUID=#{menuid}
+      </if>
+      <if test="menuname != null and menuname != '' " >
+        AND MENUNAME=#{menuname}
+      </if>
+      <if test="pid != null and pid != ''" >
+        AND PID=#{pid}
+      </if>
+      <if test="url != null and url != ''" >
+        AND URL=#{url}
+      </if>
+      <if test="img != null and img != ''" >
+        AND IMG=#{img}
+      </if>
+      <if test="icon != null and icon != ''" >
+       AND  ICON=#{icon}
+      </if>
+      <if test="orderid != null and orderid != ''" >
+       AND  ORDERID=#{orderid}
+      </if>
+      <if test="ismenu != null" >
+       AND  ISMENU=#{ismenu}
+      </if>
+      <if test="menutype != null" >
+       AND  MENUTYPE=#{menutype}
+      </if>
+      <if test="starttime != null" >
+        AND STARTTIME<![CDATA[=>]]>#{starttime}
+      </if>
+      <if test="endtime != null" >
+        AND ENDTIME<![CDATA[<=]]>#{endtime}
+      </if>
+      <if test="startTimeStr != null  and startTimeStr != ''" >
+       AND time_format(STARTTIME,'%Y%m%d')<![CDATA[=>]]>#{startTimeStr}
+      </if>
+      <if test="endTimeStr != null  and endTimeStr != ''" >
+       AND time_format(ENDTIME,'%Y%m%d')<![CDATA[<=]]>#{endTimeStr}
+      </if>
+      <if test="isOpenBlank != null" >
+        AND IS_OPEN_BLANK=#{isOpenBlank}
+      </if>
+      <if test="isDefaultOpen != null" >
+        AND IS_DEFAULT_OPEN=#{isDefaultOpen}
+      </if>
+  </sql>
+  
+  <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+  
+  
+  
+  <select id="Selective" parameterType="com.avalon.model.sys.Menu" resultMap="BaseResultMap">
+    select t.* from sys_menu t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+  </select>
+  
+  <delete id="delete" parameterType="com.avalon.model.sys.Menu">
+    delete  from sys_menu  where  MENUID in (${menuid})
+  </delete>
+  
+  <select id="treeData" parameterType="com.avalon.model.sys.Menu" resultMap="BaseResultMap">
+    select t.* from sys_menu t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	  order by  ORDERID
+  </select>
+ 
+  <select id="DataPagination" parameterType="com.avalon.model.sys.Menu" resultMap="BaseResultMap">
+    select t.* from sys_menu t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.sys.Menu" resultType="java.lang.Integer">
+     select count(1) from sys_menu t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  <!-- 批量新增 -->
+  <insert id="insertbatch" parameterType="java.util.List" >
+  	 insert into sys_menu 
+     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuid != null and menuid != ''" >
+        MENUID,
+      </if>
+      <if test="menuname != null  and menuname != ''" >
+        MENUNAME,
+      </if>
+      <if test="pid != null  and pid != ''" >
+        PID,
+      </if>
+      <if test="url != null  and url != ''" >
+        URL,
+      </if>
+      <if test="img != null  and img != ''" >
+        IMG,
+      </if>
+      <if test="icon != null  and icon != ''" >
+        ICON,
+      </if>
+      <if test="orderid != null  and orderid != ''" >
+        ORDERID,
+      </if>
+      <if test="ismenu != null" >
+        ISMENU,
+      </if>
+      <if test="menutype != null  and menutype != ''" >
+        MENUTYPE,
+      </if>
+      <if test="starttime != null  and starttime != ''" >
+        STARTTIME,
+      </if>
+      <if test="endtime != null  and endtime != ''" >
+        ENDTIME,
+      </if>
+      <if test="isOpenBlank != null  and isOpenBlank != ''" >
+        IS_OPEN_BLANK,
+      </if>
+      <if test="isDefaultOpen != null  and isDefaultOpen != ''" >
+        IS_DEFAULT_OPEN,
+      </if>
+    </trim>
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+         <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuid != null  and menuid != ''" >
+        #{item.menuid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuname != null  and menuname != ''" >
+        #{item.menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null  and pid != ''" >
+        #{item.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null  and url != ''" >
+        #{item.url,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null  and img != ''" >
+        #{item.img,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null  and icon != ''" >
+        #{item.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null  and orderid != ''" >
+        #{item.orderid,jdbcType=INTEGER},
+      </if>
+      <if test="ismenu != null" >
+        #{item.ismenu,jdbcType=INTEGER},
+      </if>
+      <if test="menutype != null  and menutype != ''" >
+        #{item.menutype,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null  and starttime != ''" >
+        #{item.starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null  and endtime != ''" >
+        #{item.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOpenBlank != null  and isOpenBlank != ''" >
+        #{item.isOpenBlank,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefaultOpen != null  and isDefaultOpen != ''" >
+        #{item.isDefaultOpen,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    </foreach>
+  </insert>
+  
+  
+  <insert id="insert" parameterType="com.avalon.model.sys.Menu" >
+    insert into sys_menu (MENUID, MENUNAME, PID, 
+      URL, IMG, ICON, ORDERID, 
+      ISMENU, MENUTYPE, STARTTIME, 
+      ENDTIME, IS_OPEN_BLANK, IS_DEFAULT_OPEN)
+    values (#{menuid,jdbcType=VARCHAR}, #{menuname,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{orderid,jdbcType=INTEGER}, 
+      #{ismenu,jdbcType=INTEGER}, #{menutype,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{isOpenBlank,jdbcType=VARCHAR}, #{isDefaultOpen,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.avalon.model.sys.Menu" >
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuid != null and menuid != ''" >
+        MENUID,
+      </if>
+      <if test="menuname != null  and menuname != ''" >
+        MENUNAME,
+      </if>
+      <if test="pid != null  and pid != ''" >
+        PID,
+      </if>
+      <if test="url != null  and url != ''" >
+        URL,
+      </if>
+      <if test="img != null  and img != ''" >
+        IMG,
+      </if>
+      <if test="icon != null  and icon != ''" >
+        ICON,
+      </if>
+      <if test="orderid != null  and orderid != ''" >
+        ORDERID,
+      </if>
+      <if test="ismenu != null" >
+        ISMENU,
+      </if>
+      <if test="menutype != null  and menutype != ''" >
+        MENUTYPE,
+      </if>
+      <if test="starttime != null  and starttime != ''" >
+        STARTTIME,
+      </if>
+      <if test="endtime != null  and endtime != ''" >
+        ENDTIME,
+      </if>
+      <if test="isOpenBlank != null  and isOpenBlank != ''" >
+        IS_OPEN_BLANK,
+      </if>
+      <if test="isDefaultOpen != null  and isDefaultOpen != ''" >
+        IS_DEFAULT_OPEN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuid != null  and menuid != ''" >
+        #{menuid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuname != null  and menuname != ''" >
+        #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null  and pid != ''" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null  and url != ''" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null  and img != ''" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null  and icon != ''" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null  and orderid != ''" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="ismenu != null" >
+        #{ismenu,jdbcType=INTEGER},
+      </if>
+      <if test="menutype != null  and menutype != ''" >
+        #{menutype,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null  and starttime != ''" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null  and endtime != ''" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOpenBlank != null  and isOpenBlank != ''" >
+        #{isOpenBlank,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefaultOpen != null  and isDefaultOpen != ''" >
+        #{isDefaultOpen,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByMenuidSelective" parameterType="com.avalon.model.sys.Menu" >
+    update sys_menu
+    <set >
+      
+      <if test="menuname != null and menuname != ''" >
+        MENUNAME = #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null and pid != ''" >
+        PID = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null and url != ''" >
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null and img != ''" >
+        IMG = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null and icon != ''" >
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="orderid != null and orderid != ''" >
+        ORDERID = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="ismenu != null and ismenu != ''" >
+        ISMENU = #{ismenu,jdbcType=INTEGER},
+      </if>
+      <if test="menutype != null and menutype != ''" >
+        MENUTYPE = #{menutype,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null and starttime != ''" >
+        STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null and endtime != ''" >
+        ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOpenBlank != null and isOpenBlank != ''" >
+        IS_OPEN_BLANK = #{isOpenBlank,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefaultOpen != null and isDefaultOpen != ''" >
+        IS_DEFAULT_OPEN = #{isDefaultOpen,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENUID = #{menuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByMenuid" parameterType="com.avalon.model.sys.Menu" >
+    update sys_menu
+    set 
+      MENUNAME = #{menuname,jdbcType=VARCHAR},
+      PID = #{pid,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      IMG = #{img,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      ORDERID = #{orderid,jdbcType=INTEGER},
+      ISMENU = #{ismenu,jdbcType=INTEGER},
+      MENUTYPE = #{menutype,jdbcType=INTEGER},
+      STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+      IS_OPEN_BLANK = #{isOpenBlank,jdbcType=VARCHAR},
+      IS_DEFAULT_OPEN = #{isDefaultOpen,jdbcType=VARCHAR}
+    where MENUID = #{menuid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 批量更新 -->
+  <update id="updateByMenuidSort" parameterType="java.util.List" >
+    update SYS_MENU set
+    ORDERID=
+  <foreach collection="list" item="item" index="index" separator=" " open="case MENUID" close="end">
+      when #{item.menuid,jdbcType=VARCHAR} then #{item.orderid,jdbcType=INTEGER}
+  </foreach>
+   ,PID=
+  <foreach collection="list" item="item" index="index" separator=" " open="case MENUID" close="end">
+      when #{item.menuid,jdbcType=VARCHAR} then #{item.pid,jdbcType=VARCHAR}
+  </foreach>
+  ,ISMENU=
+  <foreach collection="list" item="item" index="index" separator=" " open="case MENUID" close="end">
+      when #{item.menuid,jdbcType=VARCHAR} then #{item.ismenu,jdbcType=INTEGER}
+  </foreach>
+  where MENUID in
+  <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+      #{item.menuid,jdbcType=VARCHAR}
+  </foreach>
+  </update>
+  
+</mapper>

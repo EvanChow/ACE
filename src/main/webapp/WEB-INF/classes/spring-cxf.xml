@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xmlns:aop="http://www.springframework.org/schema/aop" 
+ xmlns:c="http://www.springframework.org/schema/c" 
+ xmlns:cache="http://www.springframework.org/schema/cache" 
+ xmlns:context="http://www.springframework.org/schema/context" 
+ xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+ xmlns:jee="http://www.springframework.org/schema/jee" 
+ xmlns:lang="http://www.springframework.org/schema/lang" 
+ xmlns:mvc="http://www.springframework.org/schema/mvc" 
+ xmlns:p="http://www.springframework.org/schema/p" 
+ xmlns:task="http://www.springframework.org/schema/task" 
+ xmlns:tx="http://www.springframework.org/schema/tx" 
+ xmlns:util="http://www.springframework.org/schema/util"
+ xmlns:jaxws="http://cxf.apache.org/jaxws"
+ xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	 <!-- 引入CXF下面的配置文件 -->	
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<!--  
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>-->
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>	
+		
+		
+	<!-- 将Bean托管给Spring -->  	
+	<bean id="restUser" class="com.avalon.webservice.rest.RestController"/>	
+	
+	
+	 <!-- CXF 拦截器 <ref bean="tokenInterceptor" />
+    <bean id="tokenInterceptor" class="com.xidian.wq.imaopay.interceptor.cxf.TokenInterceptor" />
+     -->
+	
+	   <!-- address-请求路径 -->
+    <jaxrs:server id="restContainer" address="/rest">
+        <!-- 输入拦截器设置 -->
+        <jaxrs:inInterceptors>
+        </jaxrs:inInterceptors>
+         
+        <!-- 输出拦截器设置 -->
+        <jaxrs:outInterceptors>
+        </jaxrs:outInterceptors>
+        
+        <!-- 配置需要暴露的BeanService -->  
+        <!-- serviceBeans-暴露的WebService服务类 -->
+        <jaxrs:serviceBeans> 
+            <ref bean="restUser"/>
+        </jaxrs:serviceBeans>
+           
+        <!-- 支持的协议 -->
+        <jaxrs:extensionMappings> 
+            <entry key="json" value="application/json"/> 
+            <entry key="xml" value="application/xml"/> 
+        </jaxrs:extensionMappings> 
+         
+        <!-- 编码格式 -->
+        <jaxrs:languageMappings>
+               <entry key="en" value="en-gb"/>
+        </jaxrs:languageMappings>
+         
+    </jaxrs:server>
+    
+    <bean id="soapUser" class="com.avalon.webservice.soap.SoapController"/>	
+    <jaxws:endpoint id="soapContainer" implementor="#soapUser" address="/soap"/>
+     
+    
+    
+	
+		
+</beans>

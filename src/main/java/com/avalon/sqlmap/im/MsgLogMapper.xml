@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IMMsgLogMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.im.MsgLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mineid" property="mineid" jdbcType="VARCHAR" />
+    <result column="minename" property="minename" jdbcType="VARCHAR" />
+    <result column="toid" property="toid" jdbcType="VARCHAR" />
+    <result column="toname" property="toname" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mineid, minename, toid, toname, type, content, status, createtime, updatetime
+  </sql>
+  <sql id="SQL_WHERE">
+      1=1
+      <if test="id != null and id != '' " >
+        id=#{id,jdbcType=VARCHAR}
+      </if>
+      <if test="mineid != null and mineid!='' " >
+        mineid=#{mineid,jdbcType=VARCHAR}
+      </if>
+      <if test="minename != null and minename!='' " >
+        minename=#{minename,jdbcType=VARCHAR}
+      </if>
+      <if test="toid != null and toid!='' " >
+        toid=#{toid,jdbcType=VARCHAR}
+      </if>
+      <if test="toname != null and toname!='' " >
+        toname=#{toname,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null and type!='' " >
+        type=#{type,jdbcType=VARCHAR}
+      </if>
+      <if test="content != null and content!='' " >
+        content=#{content,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null and status!='' " >
+        status=#{status,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null " >
+        createtime=#{createtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatetime != null" >
+        updatetime=#{updatetime,jdbcType=TIMESTAMP}
+      </if>
+   </sql>
+   
+   <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+  
+   <select id="select" resultMap="BaseResultMap" parameterType="com.avalon.model.im.MsgLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from avalon_im_msglog
+     <where>
+	    <include refid="SQL_WHERE"/>
+    </where>
+  </select>
+  
+  <delete id="delete" parameterType="com.avalon.model.im.MsgLog" >
+    delete from avalon_im_msglog where id in (${id})
+  </delete>
+  
+  <select id="DataPagination" parameterType="com.avalon.model.im.MsgLog" resultMap="BaseResultMap">
+    select t.* from avalon_im_msglog t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.im.MsgLog" resultType="java.lang.Integer">
+     select count(1) from avalon_im_msglog t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from avalon_im_msglog
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from avalon_im_msglog
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.avalon.model.im.MsgLog" >
+    insert into avalon_im_msglog (id, mineid, minename, 
+      toid, toname, type, 
+      content, status, createtime, 
+      updatetime)
+    values (#{id,jdbcType=VARCHAR}, #{mineid,jdbcType=VARCHAR}, #{minename,jdbcType=VARCHAR}, 
+      #{toid,jdbcType=VARCHAR}, #{toname,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.avalon.model.im.MsgLog" >
+    insert into avalon_im_msglog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mineid != null" >
+        mineid,
+      </if>
+      <if test="minename != null" >
+        minename,
+      </if>
+      <if test="toid != null" >
+        toid,
+      </if>
+      <if test="toname != null" >
+        toname,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="mineid != null" >
+        #{mineid,jdbcType=VARCHAR},
+      </if>
+      <if test="minename != null" >
+        #{minename,jdbcType=VARCHAR},
+      </if>
+      <if test="toid != null" >
+        #{toid,jdbcType=VARCHAR},
+      </if>
+      <if test="toname != null" >
+        #{toname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.avalon.model.im.MsgLog" >
+    update avalon_im_msglog
+    <set >
+      <if test="mineid != null" >
+        mineid = #{mineid,jdbcType=VARCHAR},
+      </if>
+      <if test="minename != null" >
+        minename = #{minename,jdbcType=VARCHAR},
+      </if>
+      <if test="toid != null" >
+        toid = #{toid,jdbcType=VARCHAR},
+      </if>
+      <if test="toname != null" >
+        toname = #{toname,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.avalon.model.im.MsgLog" >
+    update avalon_im_msglog
+    set mineid = #{mineid,jdbcType=VARCHAR},
+      minename = #{minename,jdbcType=VARCHAR},
+      toid = #{toid,jdbcType=VARCHAR},
+      toname = #{toname,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

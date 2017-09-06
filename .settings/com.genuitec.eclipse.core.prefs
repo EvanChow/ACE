@@ -1,0 +1,4 @@
+#Fri Mar 31 11:27:06 CST 2017
+eclipse.preferences.version=1
+validator.Checked=src/main/webapp/ace/assets/socket/sockjs-0.3.4.min.js,src/main/webapp/ace/assets/socket/sockjs-0.3.4.js,src/main/webapp/assets/js/prettify.min.js,src/main/webapp/WEB-INF/web.xml,doc/codetemplates_ace.xml,src/main/webapp/ace/assets/js/prettify.min.js,doc/codeFormatter.xml
+validator.Unchecked=

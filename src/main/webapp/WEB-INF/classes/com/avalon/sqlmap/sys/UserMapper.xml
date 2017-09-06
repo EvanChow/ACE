@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.sys.User" >
+    <result column="UID" property="uid" jdbcType="VARCHAR" />
+    <result column="AGENTID" property="agentid" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="PASSWD" property="passwd" jdbcType="VARCHAR" />
+    <result column="ASSIGNFLAG" property="assignflag" jdbcType="INTEGER" />
+    <result column="DEPARTID" property="departid" jdbcType="VARCHAR" />
+    <result column="POSTION" property="postion" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_INFO" property="accountInfo" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="PROVENSE" property="provense" jdbcType="VARCHAR" />
+    <result column="CITY" property="city" jdbcType="VARCHAR" />
+    <result column="HOSPITALNAME" property="hospitalname" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
+    <result column="JOB" property="job" jdbcType="VARCHAR" />
+    <result column="GROUPID" property="groupid" jdbcType="VARCHAR" />
+    <result column="GROUPNAME" property="groupname" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    UID, AGENTID, USERNAME, PASSWD, ASSIGNFLAG, DEPARTID, POSTION, STATUS, USER_ID, ACCOUNT_INFO, 
+    SEX, PHONE, PROVENSE, CITY, HOSPITALNAME, DEPARTMENT, JOB, GROUPID, GROUPNAME
+  </sql>
+  
+   <sql id="SQL_WHERE">
+      1=1
+      <if test="uid != null and uid !='' " >
+        AND UID=#{uid,jdbcType=VARCHAR}
+      </if>
+      <if test="agentid != null and AGENTID !='' " >
+        AND AGENTID=#{agentid,jdbcType=VARCHAR}
+      </if>
+      <if test="username != null and username !='' " >
+        AND USERNAME=#{username,jdbcType=VARCHAR}
+      </if>
+      <if test="passwd != null and passwd !='' " >
+         AND PASSWD=#{passwd,jdbcType=VARCHAR}
+      </if>
+      <if test="assignflag != null" >
+         AND ASSIGNFLAG=#{assignflag,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null and departid !='' " >
+         AND DEPARTID=#{departid,jdbcType=VARCHAR}
+      </if>
+      <if test="postion != null" >
+         AND POSTION=#{postion,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+         AND STATUS=#{status,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null and userId !='' " >
+         AND USERID=#{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="accountInfo != null and accountInfo !='' " >
+         AND ACCOUNTINFO=#{accountInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="sex != null and sex !='' " >
+         AND SEX=#{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null and phone !='' " >
+         AND PHONE=#{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="provense != null and provense !='' " >
+         AND PROVENSE=#{provense,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null and city !='' " >
+         AND CITY=#{city,jdbcType=VARCHAR}
+      </if>
+      <if test="hospitalname != null and hospitalname !='' " >
+         AND HOSPITALNAME=#{hospitalname,jdbcType=VARCHAR}
+      </if>
+      <if test="department != null and department !='' " >
+         AND DEPARTMENT=#{department,jdbcType=VARCHAR}
+      </if>
+      <if test="job != null and job !='' " >
+         AND JOB=#{job,jdbcType=VARCHAR}
+      </if>
+      <if test="groupid != null and groupid !='' " >
+         AND GROUPID=#{groupid,jdbcType=VARCHAR}
+      </if>
+      <if test="groupname != null and groupname !='' " >
+         AND GROUPNAME=#{groupname,jdbcType=VARCHAR}
+      </if>
+   </sql>
+   
+   <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+ 
+ <select id="select"  parameterType="com.avalon.model.sys.User" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List"/>
+    from sys_user t
+   <where>
+	    <include refid="SQL_WHERE"/>
+   </where>
+ </select>
+ 
+ <select id="delete" parameterType="com.avalon.model.sys.User">
+    delete  from sys_user  where  UID in (${uid})
+  </select>
+  
+  <!-- 批量新增 -->
+  <insert id="insertbatch" parameterType="java.util.List" >
+    insert into sys_user 
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        UID,
+      </if>
+      <if test="agentid != null" >
+        AGENTID,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="passwd != null" >
+        PASSWD,
+      </if>
+      <if test="assignflag != null" >
+        ASSIGNFLAG,
+      </if>
+      <if test="departid != null" >
+        DEPARTID,
+      </if>
+      <if test="postion != null" >
+        POSTION,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="accountInfo != null" >
+        ACCOUNT_INFO,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="provense != null" >
+        PROVENSE,
+      </if>
+      <if test="city != null" >
+        CITY,
+      </if>
+      <if test="hospitalname != null" >
+        HOSPITALNAME,
+      </if>
+      <if test="department != null" >
+        DEPARTMENT,
+      </if>
+      <if test="job != null" >
+        JOB,
+      </if>
+      <if test="groupid != null" >
+        GROUPID,
+      </if>
+      <if test="groupname != null" >
+        GROUPNAME,
+      </if>
+    </trim>
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{item.uid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentid != null" >
+        #{item.agentid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{item.username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        #{item.passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="assignflag != null" >
+        #{item.assignflag,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null" >
+        #{item.departid,jdbcType=VARCHAR},
+      </if>
+      <if test="postion != null" >
+        #{item.postion,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{item.status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{item.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountInfo != null" >
+        #{item.accountInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{item.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{item.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="provense != null" >
+        #{item.provense,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{item.city,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        #{item.hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{item.department,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{item.job,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{item.groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        #{item.groupname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    </foreach>
+  </insert>
+  
+  <select id="DataPagination" parameterType="com.avalon.model.sys.User" resultMap="BaseResultMap">
+    select t.* from sys_user t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.sys.User" resultType="java.lang.Integer">
+     select count(1) from sys_user t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  <insert id="insert" parameterType="com.avalon.model.sys.User" >
+    insert into sys_user (UID, AGENTID, USERNAME, 
+      PASSWD, ASSIGNFLAG, DEPARTID, 
+      POSTION, STATUS, USER_ID, 
+      ACCOUNT_INFO, SEX, PHONE, 
+      PROVENSE, CITY, HOSPITALNAME, 
+      DEPARTMENT, JOB, GROUPID, 
+      GROUPNAME)
+    values (#{uid,jdbcType=VARCHAR}, #{agentid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{passwd,jdbcType=VARCHAR}, #{assignflag,jdbcType=INTEGER}, #{departid,jdbcType=VARCHAR}, 
+      #{postion,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{accountInfo,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{provense,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{hospitalname,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{groupid,jdbcType=VARCHAR}, 
+      #{groupname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.avalon.model.sys.User" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        UID,
+      </if>
+      <if test="agentid != null" >
+        AGENTID,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="passwd != null" >
+        PASSWD,
+      </if>
+      <if test="assignflag != null" >
+        ASSIGNFLAG,
+      </if>
+      <if test="departid != null" >
+        DEPARTID,
+      </if>
+      <if test="postion != null" >
+        POSTION,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="accountInfo != null" >
+        ACCOUNT_INFO,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="provense != null" >
+        PROVENSE,
+      </if>
+      <if test="city != null" >
+        CITY,
+      </if>
+      <if test="hospitalname != null" >
+        HOSPITALNAME,
+      </if>
+      <if test="department != null" >
+        DEPARTMENT,
+      </if>
+      <if test="job != null" >
+        JOB,
+      </if>
+      <if test="groupid != null" >
+        GROUPID,
+      </if>
+      <if test="groupname != null" >
+        GROUPNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentid != null" >
+        #{agentid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="assignflag != null" >
+        #{assignflag,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null" >
+        #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="postion != null" >
+        #{postion,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountInfo != null" >
+        #{accountInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="provense != null" >
+        #{provense,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        #{groupname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByUidSelective" parameterType="com.avalon.model.sys.User" >
+    update sys_user
+    <set >
+      <if test="agentid != null" >
+        AGENTID = #{agentid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        PASSWD = #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="assignflag != null" >
+        ASSIGNFLAG = #{assignflag,jdbcType=INTEGER},
+      </if>
+      <if test="departid != null" >
+        DEPARTID = #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="postion != null" >
+        POSTION = #{postion,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountInfo != null" >
+        ACCOUNT_INFO = #{accountInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="provense != null" >
+        PROVENSE = #{provense,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalname != null" >
+        HOSPITALNAME = #{hospitalname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        DEPARTMENT = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        JOB = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="groupid != null" >
+        GROUPID = #{groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        GROUPNAME = #{groupname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UID = #{uid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByUid" parameterType="com.avalon.model.sys.User" >
+    update sys_user
+    set 
+      AGENTID = #{agentid,jdbcType=VARCHAR},
+      USERNAME = #{username,jdbcType=VARCHAR},
+      PASSWD = #{passwd,jdbcType=VARCHAR},
+      ASSIGNFLAG = #{assignflag,jdbcType=INTEGER},
+      DEPARTID = #{departid,jdbcType=VARCHAR},
+      POSTION = #{postion,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      ACCOUNT_INFO = #{accountInfo,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      PROVENSE = #{provense,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      HOSPITALNAME = #{hospitalname,jdbcType=VARCHAR},
+      DEPARTMENT = #{department,jdbcType=VARCHAR},
+      JOB = #{job,jdbcType=VARCHAR},
+      GROUPID = #{groupid,jdbcType=VARCHAR},
+      GROUPNAME = #{groupname,jdbcType=VARCHAR}
+    where UID = #{uid,jdbcType=VARCHAR}
+  </update>
+</mapper>

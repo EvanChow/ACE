@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.avalon.model.sys.Role" >
+    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
+    <result column="ROLENAME" property="rolename" jdbcType="VARCHAR" />
+    <result column="ROLETYPE" property="roletype" jdbcType="INTEGER" />
+    <result column="ROLECODE" property="rolecode" jdbcType="VARCHAR" />
+    <result column="STARTTIME" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="ENDTIME" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ROLEID, ROLENAME, ROLETYPE, ROLECODE, STARTTIME, ENDTIME, STATUS
+  </sql>
+  
+    <sql id="SQL_WHERE">
+      1=1
+      <if test="roleid != null and roleid != '' " >
+        AND roleid=#{roleid,jdbcType=VARCHAR}
+      </if>
+      <if test="rolename != null and rolename != '' " >
+        AND rolename=#{rolename,jdbcType=VARCHAR}
+      </if>
+      <if test="roletype != null" >
+        AND roletype=#{roletype,jdbcType=INTEGER}
+      </if>
+      <if test="rolecode != null and rolecode != '' " >
+        AND rolecode=#{rolecode,jdbcType=VARCHAR}
+      </if>
+      <if test="starttime != null" >
+        AND starttime=#{starttime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endtime != null" >
+        AND endtime=#{endtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        AND status=#{status,jdbcType=INTEGER}
+      </if>
+    </sql>
+    
+    <sql id="SQL_PAGING">
+      <if test="sort != null  and sort != ''" >
+      order by  #{sort}
+      </if>
+      <if test="order != null  and order != ''" >
+       #{order}
+      </if>
+	  LIMIT #{limit},#{offset}
+  </sql>
+  
+   <select id="select"  parameterType="com.avalon.model.sys.Role" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List"/>
+    from sys_role t
+   <where>
+	    <include refid="SQL_WHERE"/>
+   </where>
+ </select>
+ 
+  <!-- 批量新增 -->
+  <insert id="insertbatchrole" parameterType="java.util.List" >
+    insert into sys_role_menu (ROLEID,MENUID,STATUS) values
+      <foreach collection="list" item="item" index="index" separator="," > 
+       (#{item.roleid},#{item.menuid},1)
+      </foreach>
+  </insert>
+ 
+ <delete id="deleterm" parameterType="com.avalon.model.sys.Role">
+    delete  from sys_role_menu  where  roleid=#{roleid}
+  </delete>
+ 
+ <delete id="delete" parameterType="com.avalon.model.sys.Role">
+    delete  from sys_role  where  roleid in (${roleid})
+  </delete>
+  
+  <select id="DataPagination" parameterType="com.avalon.model.sys.Role" resultMap="BaseResultMap">
+    select t.* from sys_role t
+	   <where>
+	    <include refid="SQL_WHERE"/>
+	   </where>
+	   <include refid="SQL_PAGING"/>
+  </select>
+  
+  <select id="DataPaginationCount" parameterType="com.avalon.model.sys.Role" resultType="java.lang.Integer">
+     select count(1) from sys_role t
+     <where>
+	    <include refid="SQL_WHERE"/>
+	 </where>
+  </select>
+  
+  
+  <insert id="insert" parameterType="com.avalon.model.sys.Role" >
+    insert into sys_role (ROLEID, ROLENAME, ROLETYPE, 
+      ROLECODE, STARTTIME, ENDTIME, 
+      STATUS)
+    values (#{roleid,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{roletype,jdbcType=INTEGER}, 
+      #{rolecode,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.avalon.model.sys.Role" >
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        ROLEID,
+      </if>
+      <if test="rolename != null" >
+        ROLENAME,
+      </if>
+      <if test="roletype != null" >
+        ROLETYPE,
+      </if>
+      <if test="rolecode != null" >
+        ROLECODE,
+      </if>
+      <if test="starttime != null" >
+        STARTTIME,
+      </if>
+      <if test="endtime != null" >
+        ENDTIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="roletype != null" >
+        #{roletype,jdbcType=INTEGER},
+      </if>
+      <if test="rolecode != null" >
+        #{rolecode,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByRoleidSelective" parameterType="com.avalon.model.sys.Role" >
+    update sys_role
+    <set >
+      <if test="rolename != null" >
+        ROLENAME = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="roletype != null" >
+        ROLETYPE = #{roletype,jdbcType=INTEGER},
+      </if>
+      <if test="rolecode != null" >
+        ROLECODE = #{rolecode,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByRoleid" parameterType="com.avalon.model.sys.Role" >
+    update sys_role
+    set 
+      ROLENAME = #{rolename,jdbcType=VARCHAR},
+      ROLETYPE = #{roletype,jdbcType=INTEGER},
+      ROLECODE = #{rolecode,jdbcType=VARCHAR},
+      STARTTIME = #{starttime,jdbcType=TIMESTAMP},
+      ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=INTEGER}
+    where ROLEID = #{roleid,jdbcType=VARCHAR}
+  </update>
+</mapper>
