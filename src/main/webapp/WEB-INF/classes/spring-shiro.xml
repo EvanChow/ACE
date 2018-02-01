@@ -65,7 +65,7 @@
         <property name="userRolesQuery"
             value="SELECT ROLECODE FROM SYS_USER_ROLE LEFT JOIN SYS_ROLE USING (ROLEID) LEFT JOIN SYS_USER USING (UID) WHERE USERNAME = ?"></property>  
         <property name="permissionsQuery"  
-            value="SELECT PERMISSIONNAME FROM SYS_ROLE_PERMISSION  LEFT JOIN SYS_PERMISSION USING(PERMISSIONID) LEFT JOIN SYS_ROLE USING(ROLEID) WHERE ROLENAME =?"></property>  
+            value="SELECT PERMISSIONNAME FROM SYS_ROLE_PERMISSION  LEFT JOIN SYS_PERMISSION USING(PERMISSIONID) LEFT JOIN SYS_ROLE USING(ROLEID) WHERE ROLECODE =?"></property>  
     </bean>
   
     <!-- Shiro安全管理器 -->  
@@ -73,23 +73,24 @@
         <property name="realm" ref="jdbcRealm"></property>
         <property name="sessionManager" ref="sessionManager" />
         <property name="cacheManager" ref="cacheManager"/>
-        <!--  
+        <!--  -->
         <property name="rememberMeManager" ref="rememberMeManager"/>
-        -->
+        
     </bean>
     
     <!-- 会话管理器 --> 
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">   
-	    <property name="globalSessionTimeout" value="1800000"/>
+	    <property name="globalSessionTimeout" value="3600000"/>
 	    <property name="deleteInvalidSessions" value="true"/> 
 	    <property name="sessionValidationSchedulerEnabled" value="true"/>
 	    <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>  
 	    <property name="sessionDAO" ref="sessionDAO"/>
 	    <property name="sessionIdCookieEnabled" value="true"/>
-	    <property name="sessionIdCookie" ref="sessionIdCookie"/>  
+	    <property name="sessionIdCookie" ref="sessionIdCookie"/>
+	    <property name="sessionListeners" ref="mysessionListener" />
     </bean>
       
-
+	 <bean id="mysessionListener" class="com.avalon.listener.shiro.ShiroSessionListener"></bean>
     
     <!-- session会话存储的实现类
     <bean id="mySessionDAO" class="com.avalon.dao.MySessionDao"></bean>
@@ -98,7 +99,10 @@
     <!-- 会话Cookie模板 -->  
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 	  <constructor-arg name="name" value="AVALONSESSIONID"/>
-	  
+	  <!--  -->
+	  <property name="httpOnly" value="true"/>
+      <property name="maxAge" value="-1"/>
+      
 	</bean>
       <!--    定时10分钟检验一次有所session是否有效（毫秒单位）  -->
    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
@@ -114,6 +118,18 @@
 	    <property name="activeSessionsCacheName" value="activeSessionsCache"/>  
 	    <property name="sessionIdGenerator" ref="sessionIdGenerator"/>  
 	</bean>
+	
+	
+	    <!-- 国际化配置 -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames" value="i18n.messages" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+    <bean id="localeResolver"
+        class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+          <property name="defaultLocale" value="zh_CN"/>
+    </bean>
 	
 
   
@@ -138,11 +154,11 @@
                 /ace/assets/** =anon
                 /**/del.do** =authc,roles[admin]
             </value>
-        </property>
+        </property>  
     </bean>
     
     
-    <!-- rememberMe管理器
+    <!-- rememberMe管理器-->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cipherKey"
                   value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
@@ -154,7 +170,7 @@
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="2592000"/>
     </bean>
-	 -->
+	 
     
   
     <!--   

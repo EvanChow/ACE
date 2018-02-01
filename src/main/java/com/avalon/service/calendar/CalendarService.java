@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.avalon.dao.MyBatisDao;
 import com.avalon.log.ILog;
 import com.avalon.model.calendar.CalendarDay;
+import com.avalon.service.sys.SysLogService;
 
 
 @Service
@@ -17,7 +18,8 @@ public class CalendarService  implements ILog{
     @Autowired
     private MyBatisDao<CalendarDay>  mybatisDao;
     
- 
+    @Autowired
+    private SysLogService syslogService;
     
     private String mapper="CalendarCayMapper.";
     

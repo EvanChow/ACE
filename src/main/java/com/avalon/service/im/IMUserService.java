@@ -13,6 +13,7 @@ import com.avalon.log.ILog;
 import com.avalon.model.im.IMGroup;
 import com.avalon.model.im.IMGroups;
 import com.avalon.model.im.IMUser;
+import com.avalon.service.sys.SysLogService;
 
 @Service
 public class IMUserService implements ILog{
@@ -25,6 +26,9 @@ public class IMUserService implements ILog{
 
    
     private String mapper="IMUserMapper.";
+    
+    @Autowired
+    private SysLogService syslogService;
     
     /**
      * 

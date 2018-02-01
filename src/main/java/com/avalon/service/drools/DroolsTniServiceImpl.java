@@ -5,9 +5,11 @@ import org.kie.api.command.Command;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.command.CommandFactory;
 import org.kie.internal.runtime.StatelessKnowledgeSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.avalon.model.drools.Message;
+import com.avalon.service.sys.SysLogService;
 
 @Service
 public class DroolsTniServiceImpl{
@@ -17,6 +19,9 @@ public class DroolsTniServiceImpl{
     
     @Resource(name = "kieSession")//注： 这里的值与配置文件中的值是一样的  
     private KieSession  kieSession;
+    
+    @Autowired
+    private SysLogService syslogService;
     
     public Message test(){
         Message message = new Message();

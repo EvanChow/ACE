@@ -10,6 +10,7 @@ import com.avalon.dao.MyBatisDao;
 import com.avalon.log.ILog;
 import com.avalon.model.im.IMGroup;
 import com.avalon.model.im.IMUser;
+import com.avalon.service.sys.SysLogService;
 
 @Service
 public class IMGroupService  implements ILog{
@@ -20,6 +21,9 @@ public class IMGroupService  implements ILog{
     private IMUserService imuserservice;
    
     private String mapper="IMGroupMapper.";
+    
+    @Autowired
+    private SysLogService syslogService;
     
     /**
      * 

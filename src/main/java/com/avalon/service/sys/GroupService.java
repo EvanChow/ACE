@@ -14,6 +14,9 @@ import com.avalon.model.sys.Group;
 public class GroupService  implements ILog{
     @Autowired
     private MyBatisDao<Group> mybatisDao;
+    
+    @Autowired
+    private SysLogService syslogService;
    
     private String mapper="GroupMapper.";
     

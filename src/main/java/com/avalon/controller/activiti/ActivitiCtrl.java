@@ -50,7 +50,6 @@ public class ActivitiCtrl {
         Json j=new Json();
         j.setSuccess(true);
         j.setData(ActivitiUtil.list());
-        
         return j;
     }
     /**

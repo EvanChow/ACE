@@ -63,9 +63,9 @@
         <property name="authenticationQuery"
             value="SELECT t.PASSWD FROM sys_user t where t.USERNAME=?"></property>  
         <property name="userRolesQuery"
-            value="SELECT ROLENAME FROM SYS_USER_ROLE LEFT JOIN SYS_ROLE USING (ROLEID) LEFT JOIN SYS_USER USING (UID) WHERE USERNAME = ?"></property>  
+            value="SELECT ROLECODE FROM SYS_USER_ROLE LEFT JOIN SYS_ROLE USING (ROLEID) LEFT JOIN SYS_USER USING (UID) WHERE USERNAME = ?"></property>  
         <property name="permissionsQuery"  
-            value="SELECT PERMISSIONNAME FROM SYS_ROLE_PERMISSION  LEFT JOIN SYS_PERMISSION USING(PERMISSIONID) LEFT JOIN SYS_ROLE USING(ROLEID) WHERE ROLENAME =?"></property>  
+            value="SELECT PERMISSIONNAME FROM SYS_ROLE_PERMISSION  LEFT JOIN SYS_PERMISSION USING(PERMISSIONID) LEFT JOIN SYS_ROLE USING(ROLEID) WHERE ROLECODE =?"></property>  
     </bean>
   
     <!-- Shiro安全管理器 -->  

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.avalon.dao.MyBatisDao;
 import com.avalon.log.ILog;
 import com.avalon.model.im.MsgLog;
+import com.avalon.service.sys.SysLogService;
 
 @Service
 public class IMMsgLogService  implements ILog{
@@ -17,6 +18,9 @@ public class IMMsgLogService  implements ILog{
     
    
     private String mapper="IMMsgLogMapper.";
+    
+    @Autowired
+    private SysLogService syslogService;
     
     /**
      * 

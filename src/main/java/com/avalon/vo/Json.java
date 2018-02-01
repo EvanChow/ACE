@@ -6,6 +6,21 @@ public class Json {
     private String msg;
     private String type;
     private Object data;
+    
+    public Json(){  
+    }
+    
+    public Json(boolean success,String msg,Object data){
+        this.success=success;
+        this.msg=msg;
+        this.data=data;
+    }
+    
+    public Json(boolean success,String msg){
+        this.success=success;
+        this.msg=msg;
+    }
+    
     public String getId() {
         return id;
     }

@@ -19,6 +19,9 @@ public class RoleService   implements ILog{
     
     @Autowired
     private MyBatisDao<List> mybatislistDao;
+    
+    @Autowired
+    private SysLogService syslogService;
    
     private String mapper="RoleMapper.";
     

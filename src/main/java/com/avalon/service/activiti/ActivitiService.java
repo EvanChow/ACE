@@ -21,9 +21,11 @@ import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.avalon.log.ILog;
+import com.avalon.service.sys.SysLogService;
 import com.avalon.util.activiti.ActivitiUtil;
 import com.avalon.util.activiti.ProcessInstanceDiagramCmd;
 
@@ -53,6 +55,10 @@ public class ActivitiService implements ILog{
     
     @Resource
     private ProcessEngine engine;
+    
+    
+    @Autowired
+    private SysLogService syslogService;
     
     /**
      * 

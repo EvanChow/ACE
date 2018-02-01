@@ -14,6 +14,9 @@ import com.avalon.model.sys.Depart;
 public class DepartService implements ILog{
     @Autowired
     private MyBatisDao<Depart> mybatisDao;
+    
+    @Autowired
+    private SysLogService syslogService;
    
     private String mapper="DepartMapper.";
     
@@ -28,10 +31,14 @@ public class DepartService implements ILog{
      */
     public boolean add(Depart entity){
         try {
-            return mybatisDao.add(mapper+"insertSelective", entity);
+            boolean boo=mybatisDao.add(mapper+"insertSelective", entity);
+            syslogService.addLog("add", "DepartService",boo==true?"添加成功":"添加失败");
+            return boo;
         } catch (Exception e) {
+            syslogService.addLog("add", "DepartService", e.getMessage());
             loggerError.error(e.getMessage());
         }
+        
         return false;
     }
     
@@ -77,7 +84,9 @@ public class DepartService implements ILog{
         List<Depart> list=new ArrayList<Depart>();
         try {
             list=mybatisDao.getAllByEntity(mapper+"select", entity);
+            syslogService.addLog("getAll", "DepartService","查询成功");
         } catch (Exception e) {
+            syslogService.addLog("getAll", "DepartService",e.getMessage());
             loggerError.error(e.getMessage());
         }
         return list;
@@ -94,8 +103,11 @@ public class DepartService implements ILog{
      */
     public boolean del(Depart entity){
         try {
-            return mybatisDao.remove(mapper+"delete", entity);
+            boolean boo= mybatisDao.remove(mapper+"delete", entity);
+            syslogService.addLog("getAll", "DepartService",boo?"删除成功":"删除失败");
+            return boo;
         } catch (Exception e) {
+            syslogService.addLog("getAll", "DepartService",e.getMessage());
             loggerError.error(e.getMessage());
         }
         return false;
@@ -111,8 +123,11 @@ public class DepartService implements ILog{
      */
     public boolean update(Depart entity){
         try {
-            return mybatisDao.edit(mapper+"updateByDepartidSelective", entity);
+            boolean boo= mybatisDao.edit(mapper+"updateByDepartidSelective", entity);
+            syslogService.addLog("update", "DepartService",boo?"更新成功":"更新失败");
+            return boo;
         } catch (Exception e) {
+            syslogService.addLog("update", "DepartService",e.getMessage());
             loggerError.error(e.getMessage());
         }
         return false;
@@ -132,6 +147,7 @@ public class DepartService implements ILog{
         try {
             list=mybatisDao.getAllByEntity(mapper+"DataPagination", entity);
         } catch (Exception e) {
+            syslogService.addLog("DataPagination", "DepartService",e.getMessage());
             loggerError.error(e.getMessage());
         }
         
@@ -143,6 +159,7 @@ public class DepartService implements ILog{
         try {
             count= mybatisDao.getAllCount(mapper+"DataPaginationCount", entity);
         } catch (Exception e) {
+            syslogService.addLog("DataPaginationCount", "DepartService",e.getMessage());
             loggerError.error(e.getMessage());
         }
         return count;

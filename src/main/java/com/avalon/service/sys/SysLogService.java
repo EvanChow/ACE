@@ -4,15 +4,21 @@
 
 package com.avalon.service.sys;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.avalon.dao.MyBatisDao;
 import com.avalon.log.ILog;
 import com.avalon.model.sys.SysLog;
+import com.avalon.util.SysUtil;
+
+
 
 /**
  *
@@ -32,6 +38,28 @@ public class SysLogService implements ILog {
 	
 	//SqlMap空间
 	private String mapper="SysLogMapper.";
+	
+	
+	public void addLog(String action,String note,String msg){
+	    
+	    SysLog entity=new SysLog();
+	    
+	    Subject subject = SecurityUtils.getSubject();
+        
+	     entity.setId(SysUtil.createID("id"));
+        entity.setCreatetime(new Date());
+        entity.setUpdatetime(new Date());
+        entity.setAction(action);
+        entity.setNote(note);
+        if(subject.getSession() != null){
+            entity.setOperatingid(subject.getPrincipal().toString());
+        }else{
+            entity.setOperatingid("未知用户");
+        }
+        
+        entity.setMsg(msg);
+        add(entity);
+	}
 	
 	/**
      * 

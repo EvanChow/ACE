@@ -11,6 +11,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.avalon.log.ILog;
+import com.avalon.service.sys.SysLogService;
 
 
 /**
@@ -26,6 +27,8 @@ public class ActivitiDroolsService implements ILog{
     @Autowired
     private ActivitiService activitiService;
     
+    @Autowired
+    private SysLogService syslogService;
     /**
      * 
      * @方法名: DroolsDeploy

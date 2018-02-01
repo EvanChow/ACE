@@ -19,10 +19,10 @@ $(function(){
 		alert(1);
 	});
 	$("#avalon-users").click(function(){
-		alert(1);
+		alert(2);
 	});
 	$("#avalon-cogs").click(function(){
-		alert(1);
+		alert(3);
 	});
 	
 });

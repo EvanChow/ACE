@@ -15,6 +15,8 @@ public class UserService  implements ILog{
     private MyBatisDao<User> mybatisDao;
     @Autowired
     private MyBatisDao<List> mybatislistDao;
+    @Autowired
+    private SysLogService syslogService;
     
     private String mapper="UserMapper.";
     

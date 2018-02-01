@@ -11,6 +11,7 @@ import com.avalon.model.im.IMData;
 import com.avalon.model.im.IMGroup;
 import com.avalon.model.im.IMGroups;
 import com.avalon.model.im.IMUser;
+import com.avalon.service.sys.SysLogService;
 
 @Service
 public class InitIMService {
@@ -22,6 +23,9 @@ public class InitIMService {
     
     @Autowired
     private IMGroupsService imgroupsservice;
+    
+    @Autowired
+    private SysLogService syslogService;
     
     /**
      * 

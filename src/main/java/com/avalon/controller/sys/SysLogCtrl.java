@@ -14,13 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.avalon.dao.MyBatisDao;
+import com.avalon.log.ILog;
 import com.avalon.model.sys.SysLog;
 import com.avalon.service.sys.SysLogService;
 import com.avalon.util.SysUtil;
 import com.avalon.vo.DataGrid;
 import com.avalon.vo.Json;
 import com.avalon.vo.Parameter;
-import com.avalon.log.ILog;
 
 
 /**
@@ -74,11 +75,9 @@ public class SysLogCtrl  implements ILog{
     public Json add(SysLog entity){
         Json j=new Json();
         entity.setId(SysUtil.createID("id"));
-        
-        
-	             entity.setCreatetime(new Date());
-	             entity.setUpdatetime(new Date());
-	   
+        entity.setCreatetime(new Date());
+	    entity.setUpdatetime(new Date());
+	    
         j.setSuccess(sysLogService.add(entity));
         return j;
     }

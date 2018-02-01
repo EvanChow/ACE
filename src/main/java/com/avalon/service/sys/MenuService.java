@@ -21,6 +21,9 @@ public class MenuService implements ILog{
     private MyBatisDao<Menu> MyBatisMenuDao;
     
     @Autowired
+    private SysLogService syslogService;
+    
+    @Autowired
     private MyBatisDao<List> MyBatisMenuListDao;
     
     /**
@@ -328,13 +331,12 @@ public class MenuService implements ILog{
     public List<FileDirectory> getPath(String path){
         List<FileDirectory> paths=new ArrayList<FileDirectory>();
         
-        String basepath=ReaderProperty.wsAddress("config.properties","basepath");
+        String basepath=MenuService.class.getClassLoader().getResource("").getPath().toString().replaceAll("classes/", "jsp");
         if(path==null){
             path=basepath; 
         }
         File file=new File(path);
         File[] tempList = file.listFiles();
-        System.out.println("该目录下对象个数："+tempList.length);
         FileDirectory fdc=new FileDirectory();
         for (int i = 0; i < tempList.length; i++) {
             File fd=tempList[i];
@@ -345,7 +347,7 @@ public class MenuService implements ILog{
                 String prefix=fd.getName().substring(fd.getName().lastIndexOf(".")+1);
                 fdc.setPrefix(prefix);
                 String path1=fd.getPath().replaceAll("\\\\","/");
-                String path2=basepath.replaceAll("\\\\","/");
+                String path2=basepath.replaceFirst("/","");
                 String p3=path1.replaceAll(path2,"").replaceAll("."+prefix, "");
                 fdc.setUrl(p3);//路径
                 

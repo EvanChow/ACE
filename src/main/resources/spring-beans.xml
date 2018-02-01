@@ -12,5 +12,11 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 		<!-- 手动实例化配置 -->
+		
+		
+		<bean id="jobFactory" class="com.avalon.util.JobFactory"></bean>
+		<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+	      <property name="jobFactory" ref="jobFactory"></property>
+	   </bean>
 	 
 </beans>
