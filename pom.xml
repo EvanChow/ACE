@@ -12,7 +12,7 @@
     <!-- 项目属性 -->
 	<properties>
 		<!-- jar 版本设置 -->
-		<spring.version>4.3.11.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<spring-integration.version>4.0.3.RELEASE</spring-integration.version>
 		<spring-integration-stream.version>4.1.0.RELEASE</spring-integration-stream.version>
 		<spring-integration-kafka.version>1.0.0.M2</spring-integration-kafka.version>
